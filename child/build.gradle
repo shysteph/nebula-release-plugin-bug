@@ -1,0 +1,22 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.netflix.nebula:nebula-release-plugin:15.2.0'
+    }
+}
+
+plugins {
+  id 'java'
+}
+
+if(project.hasProperty('release.workCorrectly') && project.property('release.workCorrectly')) {
+  project.ext['git.root'] = file(project.property('git.root'))
+}
+
+apply plugin: 'nebula.release'
+
+
+tasks.named("release").configure {
+  dependsOn tasks.named("assemble")
+  dependsOn tasks.named("check")
+}
